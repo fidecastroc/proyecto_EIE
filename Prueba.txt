@@ -1,3 +1,31 @@
-Hola!
-Como estan?
-bien!
+N      = 6700000.0 #Population ESA
+i_0    = 1
+r_0    = 1
+s_0    = N - i_0 - r_0
+Tinc   = 5.2
+Nd     = 365
+R0     = 2.05
+beta   = expit(np.linspace(0, 3, num=Nd/4))[::-1]
+beta   = np.concatenate((beta, np.repeat(beta[-1], Nd*2-len(beta))))
+beta   = R0*beta/(N*Tinc)
+beta   = 4.60118e-8
+#
+S, I, R = SIR(s_0, I0=i_0, beta=beta, gamma=1/Tinc, days=Nd)
+Carlos Martinez4:39 PM
+# -*- coding: utf-8 -*-
+from scipy.integrate import odeint
+from scipy.integrate import solve_ivp
+from scipy.optimize import minimize
+from scipy.special import logit, expit
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def SIR(S0, I0, beta, gamma, days):
+    # Initial conditions vector
+    y0 = S0, I0, 0
+    # Integrating the SIR equations over the time grid, t
+    t = list(range(0, days))
+    # Getting results
+    result = odeint(derivSt, y0, t, args=(beta, gamma))
+    S, I, R = result.T
