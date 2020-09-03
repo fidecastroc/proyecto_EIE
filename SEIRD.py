@@ -5,8 +5,6 @@ from scipy.special import logit, expit
 import matplotlib.pyplot as plt
 import numpy as np
 
-
-
 def derivSt( y, t, beta, gamma, sigma, mu):
     S, E, I, R, D = y
     dSdt = -beta * S * I
@@ -30,13 +28,13 @@ e_0    = 0
 r_0    = 0
 d_0    = 0
 s_0    = N - i_0 - r_0
-S, E, I, R,D = SEIRD(s_0, I0=i_0, beta=0.000000105, gamma=1/2.9, sigma=1/5.2, mu=0.02, days=200)
+S, E, I, R,D = SEIRD(s_0, I0=i_0, beta=0.0000001, gamma=1/2.9, sigma=1/5.2, mu=0.02, days=300)
 
-plt.plot(S)
+#plt.plot(S)
 plt.plot(E)
 plt.plot(I)
-plt.plot(R)
+#plt.plot(R)
 plt.plot(D)
 plt.grid()
-plt.legend(["s","e","i","r","d"])
+plt.legend(["e","i","d"])
 plt.show()
