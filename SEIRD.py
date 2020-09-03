@@ -30,7 +30,7 @@ e_0    = 0
 r_0    = 0
 d_0    = 0
 s_0    = N - i_0 - r_0
-S, E, I, R,D = SEIRD(s_0, I0=i_0, beta=0.000001, gamma=1/2.9, sigma=1/5.2, mu=0.02, days=100)
+S, E, I, R,D = SEIRD(s_0, I0=i_0, beta=0.000000105, gamma=1/2.9, sigma=1/5.2, mu=0.02, days=200)
 
 plt.plot(S)
 plt.plot(E)
