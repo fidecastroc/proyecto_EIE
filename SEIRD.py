@@ -21,7 +21,7 @@ def derivSt_SEIR( y, t, beta, gamma,sigma):
     return  dSdt,dEdt, dIdt, dRdt
 
 def derivSt_SEIRD( y, t, beta, gamma, sigma, mu):
-    S,  I, E, R, D= y
+    S,  E, I, R, D= y
     dSdt = -beta * S * I
     dEdt= beta*S*I - sigma*E
     dIdt= sigma*E - gamma * I - mu*I
@@ -82,6 +82,6 @@ d_0    = 0
 s_0    = N - i_0 - r_0
 
 
-SEIR(s_0, I0=i_0, beta=0.000000113, gamma=1/2.9,sigma=1/5.2, days=300)
+SEIRD(s_0, I0=i_0, beta=0.000000113, gamma=1/2.9,sigma=1/5.2, mu=0.02,  days=300)
 
 
