@@ -5,8 +5,23 @@ from scipy.special import logit, expit
 import matplotlib.pyplot as plt
 import numpy as np
 
-def derivSt( y, t, beta, gamma, sigma, mu):
-    S, E, I, R, D = y
+def derivSt_SIR( y, t, beta, gamma):
+    S,  I, R = y
+    dSdt = -beta * S * I
+    dIdt=  beta * S * I - gamma * I 
+    dRdt = gamma * I
+    return  dSdt, dIdt, dRdt
+
+def derivSt_SEIR( y, t, beta, gamma,sigma):
+    S, E, I, R = y
+    dSdt = -beta * S * I
+    dEdt= beta*S*I - sigma*E
+    dIdt= sigma*E - gamma * I 
+    dRdt = gamma * I
+    return  dSdt,dEdt, dIdt, dRdt
+
+def derivSt_SEIRD( y, t, beta, gamma, sigma, mu):
+    S,  I, E, R, D= y
     dSdt = -beta * S * I
     dEdt= beta*S*I - sigma*E
     dIdt= sigma*E - gamma * I - mu*I
@@ -14,27 +29,59 @@ def derivSt( y, t, beta, gamma, sigma, mu):
     dDdt = mu*I
     return  dSdt, dEdt, dIdt, dRdt, dDdt
 
+def SIR(S0, I0, beta, gamma, days):
+    y0 = S0, I0, 0
+    t = list(range(0, days))
+    result = odeint(derivSt_SIR, y0, t, args=(beta, gamma))
+    S, I, R = result.T
+    plt.plot(S)
+    plt.plot(I)
+    plt.plot(R)
+    plt.grid()
+    plt.legend(['s',"i",'r'])
+    plt.title("Modelo SIR")
+    plt.show()
+    return 0
+
+def SEIR(S0, I0, beta, gamma, sigma, days):
+    y0 = S0, 0, I0, 0
+    t = list(range(0, days))
+    result = odeint(derivSt_SEIR, y0, t, args=(beta, gamma, sigma))
+    S, E, I, R = result.T
+    plt.plot(S)
+    plt.plot(E)
+    plt.plot(I)
+    plt.plot(R)
+    plt.grid()
+    plt.legend(['s',"e","i",'r'])
+    plt.title("Modelo SEIR")
+    plt.show()
+    return 0
+    
 def SEIRD(S0, I0, beta, gamma, sigma,mu, days):
     y0 = S0,0, I0, 0,0
     t = list(range(0, days))
-    result = odeint(derivSt, y0, t, args=(beta, gamma,sigma, mu))
+    result = odeint(derivSt_SEIRD, y0, t, args=(beta, gamma, sigma, mu))
     S, E, I, R, D = result.T
-    return S, E, I, R, D
+    plt.plot(S)
+    plt.plot(E)
+    plt.plot(I)
+    plt.plot(R)
+    plt.plot(D)
+    plt.grid()
+    plt.legend(['s',"e","i",'r',"d"])
+    plt.title("Modelo SEIRD")
+    plt.show()
+    return 0
     
-     
 N      = 6700000
 i_0    = 1
 e_0    = 0
 r_0    = 0
 d_0    = 0
 s_0    = N - i_0 - r_0
-S, E, I, R,D = SEIRD(s_0, I0=i_0, beta=0.0000001, gamma=1/2.9, sigma=1/5.2, mu=0.02, days=300)
 
-#plt.plot(S)
-plt.plot(E)
-plt.plot(I)
-#plt.plot(R)
-plt.plot(D)
-plt.grid()
-plt.legend(["e","i","d"])
-plt.show()
+
+SEIR(s_0, I0=i_0, beta=0.000000113, gamma=1/2.9,sigma=1/5.2, days=300)
+
+
