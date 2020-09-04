@@ -52,16 +52,37 @@ def SIR(S0, I0, betai, gammai, days):
 
 Si, Ii, Ri = SIR(s_0, I0=i_0, betai=0.000001, gammai=1/5.2, days=65)
 
-""" graficandotodos los metodos"""
+"""modelo SEIR """
+def derivSt_SEIR( y, t, betaii, gammaii,sigmaii):
+    Sii, Eii, Iii, Rii = y
+    dSiidt = -betaii * Sii * Iii
+    dEiidt= betaii*Sii*Iii - sigmaii*Eii
+    dIiidt= sigmaii*Eii - gammaii * Iii 
+    dRiidt = gammaii * Iii
+    return  dSiidt,dEiidt, dIiidt, dRiidt
 
-plt.plot(Si)
-plt.plot(Ii)
-plt.plot(Ri)
+def SEIR(S0, I0, betaii, gammaii, sigmaii, days):
+    y0 = S0, 0, I0, 0
+    t = list(range(0, days))
+    result = odeint(derivSt_SEIR, y0, t, args=(betaii, gammaii, sigmaii))
+    Sii, Eii, Iii, Rii = result.T
+    return  Sii, Eii, Iii, Rii
+    
+Sii, Eii, Iii, Rii = SEIR(s_0, I0=i_0, betaii=0.000001, gammaii=1/2.9, sigmaii=1/5.2, days=65)
+    
+""" graficando"""
 plt.plot(S)
 plt.plot(E)
 plt.plot(I)
 plt.plot(R)
 plt.plot(D)
-plt.legend (["s","e","i","r","d",'Si' , 'Ii' , 'Ri'])
+plt.plot(Si)
+plt.plot(Ii)
+plt.plot(Ri)
+plt.plot(Sii)
+plt.plot(Eii)
+plt.plot(Iii)
+plt.plot(Rii)
+plt.legend (['s','e','i','r','Si', 'Ii', 'Ri','Sii', 'Iii', 'Rii'])
 plt.grid()
 plt.show ()
