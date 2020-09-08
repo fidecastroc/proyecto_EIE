@@ -74,6 +74,14 @@ def SEIRD(S0, I0, beta, gamma, sigma,mu, days):
     plt.show()
     return 0
     
+def SIR_SSQ(coeff, N, y0, Iob):
+    beta, gamma = coeff
+    t = list (range(0,len(Iob)))
+    result = odeint(derivSt_SIR, y0, t, args=(beta, gamma))
+    S,I,R = result.T
+    f = np.sum((I-Iob)**2)
+    return f
+
 N      = 6700000
 i_0    = 1
 e_0    = 0
@@ -81,7 +89,9 @@ r_0    = 0
 d_0    = 0
 s_0    = N - i_0 - r_0
 
+Iob = np.array([3, 8, 26, 76, 225, 298, 258, 233, 189, 128, 68, 29, 14, 4])
+solution = solve_ivp(SIR_SSQ
 
-SEIRD(s_0, I0=i_0, beta=0.000000113, gamma=1/2.9,sigma=1/5.2, mu=0.02,  days=300)
+#SEIRD(s_0, I0=i_0, beta=0.000000113, gamma=1/2.9,sigma=1/5.2, mu=0.02,  days=300)
 
 
