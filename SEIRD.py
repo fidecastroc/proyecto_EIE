@@ -89,9 +89,7 @@ r_0    = 0
 d_0    = 0
 s_0    = N - i_0 - r_0
 
-Iob = np.array([3, 8, 26, 76, 225, 298, 258, 233, 189, 128, 68, 29, 14, 4])
-solution = solve_ivp(SIR_SSQ
 
-#SEIRD(s_0, I0=i_0, beta=0.000000113, gamma=1/2.9,sigma=1/5.2, mu=0.02,  days=300)
+S(s_0, I0=i_0, beta=3.6029094743522356/N, gamma=1/3.533526760861618,sigma=1/5.2,mu=0.02,days=300)
 
 
